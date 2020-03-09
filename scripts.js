@@ -7,12 +7,15 @@ $(document).ready(function () {
 
 		getParametersBuildSelection()
 		buildZVariables();
+		
 
 	});
 
 	$("#findSimplex").click(function () {
 		calculCj();
-		main();
+		minRatio();
+		buildBaseTable();
+		// main();
 	});
 
 
@@ -37,10 +40,10 @@ function getParametersBuildSelection() {
 		$("#div_contraintes").append(txt0);
 
 
-		for (j = 1; j < nbVariables; j++) {
+		for (j = 0; j < nbVariables; j++) {
 			var txt = "<input id='txtCj" + i + "_" + j + "' type='text' size='2'>";
 
-			txt += "<label for='txtCj" + i + "_" + j + "'>x<sub>" + j + "</sub></label>";
+			txt += "<label for='txtCj" + i + "_" + j + "'>x<sub>" + (j+1) + "</sub></label>";
 			$("#div_contraintes").append(txt);
 		}
 
@@ -80,7 +83,7 @@ function main() {
 	var nbContraintes = $("#txtNbContraintes").val();
 	var i;
 	var j;
-	var tab_simplex;
+	var tab_simplex = new Array();
 
 	for (i = 0; i < nbContraintes; i++) {
 		for (j = 0; j < nbVariables; j++) {
@@ -92,6 +95,7 @@ function main() {
 }
 
 
+// critere 1 
 function calculCj() {
 
 	var nbVariables = $("#txtNbVariables").val();
@@ -113,16 +117,70 @@ function calculCj() {
 	// ---------------- calcul du critère --------------------//
 	var critere_1 = Math.max.apply(Math, tab_Cj); 
 	var index_critere_1 = tab_Cj.indexOf(critere_1.toString());
-	var variable_critere1 = "x" + index_critere_1;
+	var variable_critere1 = "x" + (index_critere_1 + 1);
 	console.log("Mot premier critère:" + critere_1);
 	console.log("La variable du 1er critère:" + variable_critere1);
 	// ------------ fin calcul du critère --------------------//
+	return index_critere_1;
+}
 
+// calcul critere 2 
 
+function minRatio(){
+
+	//console.log("mon retour de fonction" + calculCj());
+
+	var nbContraintes = $("#txtNbContraintes").val();
+	var critere_1 = calculCj();
+	var i;
+	var ratio; 
+	// var ratios = new Array();
+	var ratios = [];
+	var min; 
+
+	//calculer 
+
+	for (i = 0; i < nbContraintes; i++){
+
+		ratios.push($("#valeur_contrainte_" + i).val() / $("#txtCj" + i + "_" + critere_1).val(), i);
+	
+	}
 
 	
 
+	// console.log(ratios);
+	console.log(Math.min.apply(Math, ratios));
+	// return Math.min.apply(Math, Math.min.apply(Math, ratios.slice(0))); 
+	// console.log(ratios);
+
+}
+
+function buildBaseTable(){
+	var nbContraintes = $("#txtNbContraintes").val();
+	var nbVariables = $("#txtNbVariables").val();
+	var base_table = new Array(); 
+	var val_contrainte; 
+
+	for (i = 0; i < nbContraintes; i++) {
+		for (j = 0; j < nbVariables; j++) {
+
+			// val_contrainte = $("#txtCj" + i + "_" + j).val();
+			console.log($("#txtCj" + i + "_" + j).val());
+			// base_table[i] = new Array();
+			// base_table[j] = new Array(val_contrainte);
+		
+			
+		}
 	
+	}
+
+	
+		
+	
+	
+
+console.log(base_table);
+
 
 }
 
