@@ -2,14 +2,6 @@
 
 // Main program 
 $(document).ready(function () {
-	$("button").click(function () {
-
-
-		getParametersBuildSelection()
-		buildZVariables();
-		
-
-	});
 
 	$("#findSimplex").click(function () {
 		calculCj();
@@ -20,6 +12,13 @@ $(document).ready(function () {
 
 
 });
+
+function checkscript(){
+
+		getParametersBuildSelection()
+		buildZVariables();
+	
+}
 
 // End Main Program !
 
