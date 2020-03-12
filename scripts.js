@@ -3,9 +3,9 @@ $(document).ready(function() {
 
 
     $("#findSimplex").click(function() {
-        calculCj();
-        minRatio();
-        buildBaseTable();
+        calculCj(); // retourne premier critère 
+        minRatio(); // retourne deuxieme critere 
+        buildBaseTable(); // retourne tableau de travail 
         // main();
     });
 
@@ -98,14 +98,16 @@ function calculCj() {
         }
     }
 
-    // ---------------- calcul du critère --------------------//
-    var critere_1 = Math.max.apply(Math, tab_Cj);
+    // ---------------- calcul du critère 1 --------------------/
+	var critere_1 = Math.max.apply(Math, tab_Cj).toString();
+	critere_1 = (tab_Cj.indexOf(critere_1)); // je récupère l'index de mon critere 1 dans le tableau pour pouvoir l'utiliser dans mon tableau de travail 
     var index_critere_1 = tab_Cj.indexOf(critere_1.toString());
     var variable_critere1 = "x" + (index_critere_1 + 1);
-    console.log("Mot premier critère:" + critere_1);
-    console.log("La variable du 1er critère:" + variable_critere1);
-    // ------------ fin calcul du critère --------------------//
-    return index_critere_1;
+    // console.log("Mot premier critère:" + critere_1);
+    // console.log("La variable du 1er critère:" + variable_critere1);
+	// ------------ fin calcul du critère 1 --------------------//
+	
+    return critere_1;
 }
 
 
@@ -177,7 +179,7 @@ function buildBaseTable() {
         }
     }
 
-    console.log(grille);
+    return grille;
 
 }
 
