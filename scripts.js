@@ -154,35 +154,55 @@ function minRatio() {
 function buildBaseTable() {
 	var nbVariables = parseInt($("#txtNbVariables").val());
 	var nbContraintes = parseInt($("#txtNbContraintes").val());
+	var nbVariablesAjoutees = countInfSign();
+	var nbColonnes = nbVariablesAjoutees + nbVariables;
+	var nbLignes = nbContraintes;
+	var ii = nbVariables;
+
+	alert(nbColonnes);
+
 	
 	// on cree le tableau bleu, contenant les lignes
 	var grille = new Array();
 	
 	// on cree les lignes (tableau vert) les unes après les autres
-	for(var i=0; i<nbContraintes; i++)
-	   grille[i] = new Array();
+	for(var i=0; i<nbLignes; i++)
+	   grille[i] = new Array(nbColonnes);
 	
 	// on parcourt les lignes...
-	for(var i=0; i<nbContraintes; i++){
-
+	for(var i=0; i<nbLignes; i++)
+	   // ... et dans chaque ligne, on parcourt les cellules
+	   for(var j=0; j<nbColonnes; j++)
+			grille[i][j] = $("#txtCj" + i + "_" + j).val();
+	   
+	
+	//ajout de la variables xf1 xf2 xf3 etc ... 
+	for(var i=0; i<nbLignes; i++){
 		//ajouter variable si signe inférieur pour mettre sous forme linéaire
 		if ($("#selection_comparateur" + i + " option:selected").text() == "<=") { 
-			grille[i][nbContraintes] = "0"; 
+			grille[i][ii] = "1"; 
 		} else {
-			grille[i][nbContraintes] = " "; 
+			grille[i][ii] = "0"; 
 		}
-		
-		//mettre ma condition pour signe sup ICI ;) 
-
-	   // ... et dans chaque ligne, on parcourt les cellules
-	   for(var j=0; j<nbVariables; j++){
-		  grille[i][j] = $("#txtCj" + i + "_" + j).val();
-	   }
+		ii++;
 	}
 
-	
+
+	//ajout du 0 pour les variables n'ayant pas de valeur (coefficient)
+	for(var i=0; i<nbLignes; i++) {
+	   for(var j=0; j<nbColonnes; j++){
+		if(grille[i][j] === undefined){
+			grille[i][j] = "0";
+		}
+		}
+		}
+
+
+
+	//mettre ma condition pour signe sup ICI ;) 
+	// finirDeRemplirTableauAvecZero(grille);
 	console.log(grille);
-	alert(countInfSign());
+	
 }
 
 // compte le nombre de signe inférieur =< 
@@ -197,6 +217,27 @@ function countInfSign(){
         }
 	}
 	return nb_inegalite_inf;
+}
+
+function finirDeRemplirTableauAvecZero(grille){
+
+	var nbVariables = parseInt($("#txtNbVariables").val());
+	var nbContraintes = parseInt($("#txtNbContraintes").val());
+	var nbVariablesAjoutees = countInfSign();
+	var nbColonnes = nbVariablesAjoutees + nbVariables;
+	var nbLignes = nbContraintes;
+	var ii = nbVariables;
+	console.log(grille);
+
+	for(var i=0; i<nbLignes; i++)
+  		 for(var j=0; j<nbColonnes; j++)
+			if (grille[i][j] == ""){
+				grille[i][j] = 0;
+			}
+			
+  
+
+
 }
 
 
