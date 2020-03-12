@@ -152,8 +152,8 @@ function minRatio() {
 // --- Construire tableau de matrice
 
 function buildBaseTable() {
-	var nbVariables = $("#txtNbVariables").val();
-	var nbContraintes = $("#txtNbContraintes").val();
+	var nbVariables = parseInt($("#txtNbVariables").val());
+	var nbContraintes = parseInt($("#txtNbContraintes").val());
 	
 	// on cree le tableau bleu, contenant les lignes
 	var grille = new Array();
@@ -163,13 +163,40 @@ function buildBaseTable() {
 	   grille[i] = new Array();
 	
 	// on parcourt les lignes...
-	for(var i=0; i<nbContraintes; i++)
+	for(var i=0; i<nbContraintes; i++){
+
+		//ajouter variable si signe inférieur pour mettre sous forme linéaire
+		if ($("#selection_comparateur" + i + " option:selected").text() == "<=") { 
+			grille[i][nbContraintes] = "0"; 
+		} else {
+			grille[i][nbContraintes] = " "; 
+		}
+		
+		//mettre ma condition pour signe sup ICI ;) 
+
 	   // ... et dans chaque ligne, on parcourt les cellules
-	   for(var j=0; j<nbVariables; j++)
+	   for(var j=0; j<nbVariables; j++){
 		  grille[i][j] = $("#txtCj" + i + "_" + j).val();
-	
+	   }
+	}
+
 	
 	console.log(grille);
+	alert(countInfSign());
+}
+
+// compte le nombre de signe inférieur =< 
+function countInfSign(){
+
+	var nbContraintes = parseInt($("#txtNbContraintes").val());
+	nb_inegalite_inf = 0;
+
+	for (i = 0; i < nbContraintes; i++) {
+        if ($("#selection_comparateur" + i + " option:selected").text() == "<=") {
+			nb_inegalite_inf++;
+        }
+	}
+	return nb_inegalite_inf;
 }
 
 
