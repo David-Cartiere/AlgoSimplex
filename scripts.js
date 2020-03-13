@@ -7,6 +7,12 @@ $(document).ready(function() {
         minRatio(); // retourne deuxieme critere 
         buildBaseTable(); // retourne tableau de travail 
         // main();
+
+        console.log(calculCj());
+        console.log(minRatio());
+        console.log(buildBaseTable());
+        var grille_base = buildBaseTable();
+        console.log(getColonneQ(grille_base));
     });
 
 
@@ -86,7 +92,7 @@ function calculCj() {
     var nbContraintes = $("#txtNbContraintes").val();
     var tab_Cj = [];
     var i, j;
-    var value_operateur;
+    // var value_operateur;
 
     for (j = 0; j < nbVariables; j++) {
         tab_Cj.push($("#variable_z" + j + "").val());
@@ -101,13 +107,13 @@ function calculCj() {
     // ---------------- calcul du critère 1 --------------------/
 	var critere_1 = Math.max.apply(Math, tab_Cj).toString();
 	critere_1 = (tab_Cj.indexOf(critere_1)); // je récupère l'index de mon critere 1 dans le tableau pour pouvoir l'utiliser dans mon tableau de travail 
-    var index_critere_1 = tab_Cj.indexOf(critere_1.toString());
-    var variable_critere1 = "x" + (index_critere_1 + 1);
+    // var index_critere_1 = tab_Cj.indexOf(critere_1.toString());
+    // var variable_critere1 = "x" + (index_critere_1 + 1);
     // console.log("Mot premier critère:" + critere_1);
     // console.log("La variable du 1er critère:" + variable_critere1);
 	// ------------ fin calcul du critère 1 --------------------//
-	
-    return critere_1;
+    console.log(tab_Cj);
+    return critere_1; // 
 }
 
 
@@ -119,9 +125,10 @@ function minRatio() {
     var nbContraintes = $("#txtNbContraintes").val();
     var critere_1 = calculCj();
     var i;
-    var ratio;
+    var critere_2 = "0";
+    // var ratio;
     var ratios = [];
-    var min;
+    // var min;
 
     //calculer 
 
@@ -130,7 +137,10 @@ function minRatio() {
         ratios.push($("#valeur_contrainte_" + i).val() / $("#txtCj" + i + "_" + critere_1).val(), i);
 
     }
-    console.log(Math.min.apply(Math, ratios));
+    
+    critere_2 = Math.min.apply(Math, ratios);
+    return critere_2; 
+    // console.log(Math.min.apply(Math, ratios));
 }
 
 // --- Construire tableau de matrice
@@ -196,3 +206,22 @@ function countInfSign() {
     }
     return nb_inegalite_inf;
 }
+
+//ajoute à ma grille de base la colonne Q
+function getColonneQ(grille){
+
+    var nbContraintes = $("#txtNbContraintes").val();
+    var nbVariables = parseInt($("#txtNbVariables").val());
+    var nbVariablesAjoutees = countInfSign();
+    var nbColonnes = nbVariablesAjoutees + nbVariables;
+    var nbLignes = nbContraintes;
+
+    for (i = 0; i < nbLignes; i++){
+        grille[i][nbColonnes+1] = $("#valeur_contrainte_" + i).val();
+        alert($("#valeur_contrainte_" + i).val());
+    }
+    
+    return grille;
+
+}
+
