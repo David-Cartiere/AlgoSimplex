@@ -1,5 +1,6 @@
 body {
-    background : #04485f;
+    background : #c5c5c5;
+    padding-top: 30px;
 }
 
 .hidden_content{
@@ -8,4 +9,12 @@ body {
 
 .visible_content{
     visibility: visible;
+}
+
+.form {
+    
+}
+
+.btn{
+   
 }

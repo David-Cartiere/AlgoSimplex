@@ -16,40 +16,52 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-      
-        
-            <form class="form" id="formulaire_saisie_n_m">
-                <label for="txtNbVariables">Nombre de variables</label>
-                <input type="text" class="form-control" id="txtNbVariables" value="3">
-
-                <label for="txtNbContraintes">Nombre de contraintes</label>
-                <input type="text" class="form-control" id="txtNbContraintes" value="3">
-
-                <button type="button" class="btn btn-primary" onclick="checkscript(this.form)">Valider</button>
-            </form> 
+                <section>
+                    <h3>Veuillez saisir le nombre de contraintes et de variables</h3>
+                    <form class="form form-inline" id="formulaire_saisie_n_m">
+                        <fieldset>
+                            <!-- <label for="txtn">Nombre de variables</label> -->
+                            <input type="text" class="form-control" id="txtn" value="3">
+                            <!--  <label for="txtm">Nombre de contraintes</label> --> 
+                            <input type="text" class="form-control" id="txtm" value="3">
+                            <button type="button" id="validate_param" class="btn btn-success">Valider</button>
+                        </fieldset>
+                    </form>
+                </section>
             </div>
         </div>
- 
+        <hr>
 
-    <!-- Valeur Z -->
+        <!-- Valeur Z -->
 
-    <div>
-    <select id="selection_z" class="hidden_content">
-        <option>Max</option>
-        <option>Min</option>
-    </select>
-    <span class="hidden_content">Z=</span>
+        <div class="row">
+            <div class="col-md-12">
+                <section>
+                    <form class="form">
+                        <h3>Veuillez saisir Z</h3>
+                        <select id="selection_z" class="">
+                            <option>Max</option>
+                            <option>Min</option>
+                        </select>
+                        <span class="hidden_content">Z=</span>
+                        <span id="div_valeur_z"></span>
+                    </form>
+                </section>
+            </div>
+        </div>
+         <hr>
 
-    <span id="div_valeur_z"></span>
-</div>
-
-    <!-- Liste des contraintes -->
-    <div id="div_contraintes">
+        <div class="row">
+            <div class="col-md-12">
+                <section>
+                        <h3>Veuillez saisir les contraintes</h3>
+                        <div id="div_contraintes"></div>
+                        <button value='Trouver' id="findSimplex" class="btn btn-success">Valider</button>
+                </section>
+            </div>
+        </div>
 
     </div>
-    <input type='submit' value='Trouver' id="findSimplex" class="hidden_content">
-
-</div>
 </body>
 
 </html>
