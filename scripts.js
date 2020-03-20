@@ -50,7 +50,7 @@ $(document).ready(function() {
             
         }
 
-       var tabTest = majAlltabs(gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
+       var tabTest = majGridTabPivot(gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
         // // gridTab = majOthersLines(gridTab, index_of_second_critere, index_of_first_critere,valueOfPivot, m,n);
         console.log("gridTab",gridTab);
         console.log("Tab test : ", tabTest);
@@ -316,31 +316,30 @@ function verifyValuesOfCpCz(cjZjTab, n, m){
 }
 
 // 13) MAJ des TABS 
-function majAlltabs(gridTab, index_of_second_critere, index_of_first_critere,valueOfPivot, m,n){
+function majGridTabPivot(gridTab, index_of_second_critere, index_of_first_critere,valueOfPivot, m,n){
   
    var nb_colonne =  parseInt(n) + parseInt(m);
-   var test;
-   var tabTest = gridTab;
+//    var tabTest = gridTab;
  
    for(var i = 0; i < m; i++){
        for(var j =0; j<nb_colonne; j++){
            if(i == index_of_second_critere){
               
-                 tabTest[i][j] = tabTest[i][j] / valueOfPivot;
+            gridTab[i][j] = gridTab[i][j] / valueOfPivot;
            }
         }   
     }
 
     for(var i = 0; i < m-1; i++){
-        var valeur_pivot_line = tabTest[i][index_of_first_critere];
+        var valeur_pivot_line = gridTab[i][index_of_first_critere];
         for(var j=0; j<nb_colonne;j++){
             if (i !== index_of_second_critere){
-                  tabTest[i][j] =  tabTest[i][j] - (valeur_pivot_line * tabTest[index_of_second_critere][j]);
+                gridTab[i][j] =  gridTab[i][j] - (valeur_pivot_line * gridTab[index_of_second_critere][j]);
             } 
         }
     }
     
-return tabTest;
+return gridTab;
 }
 
 
