@@ -8,61 +8,7 @@ $(document).ready(function() {
     buildGridVariables(n,m);
 
     $("#findSimplex").click(function() {
-
-        var n = get_n();
-        var m = get_m();
-
-        var cpTab = generateCpTab(m);
-        // var gridTab = generateGridTab(n,m);
-        // var cjTab = generateCjTab(n,m);
-        // var qTab = generateQTab(m);
-        
-       
-        var qTab = ["18","42","24"];
-        var gridTab = [
-            ["2","1"],
-            ["2","3"],
-            ["3","1"],
-        ];
-        var cjTab = ["3","2","0","0","0"];
-
-        // console.log("cp",cpTab);
-        // console.log("gridTab",gridTab);
-        // console.log("cjTab",cjTab);
-      
-
-        
-        var outpoutVariablesTab = generateOutputVariables(n, m);
-       
-        var gridTab = addOutputVariables(gridTab, n, m, outpoutVariablesTab);
-        var index_of_first_critere = findFirstCritere(cjTab);
-        var index_of_second_critere = findSecondCritere(qTab, gridTab, index_of_first_critere, m);
-        var valueOfPivot = getPivotValue(gridTab, index_of_first_critere, index_of_second_critere );
-        var cpXjTab = generateCpXjTab(cpTab, gridTab,n,m);
-        cpTab = updateCpTab(cpTab, index_of_second_critere, valueOfPivot);
-        /* Changer les valeurs des lignes ici --> Faire la fonction) */
-        generateCpXjTab(cpTab, gridTab,n,m);
-        var cpZjTab = generateCpZjTab(cjTab, cpXjTab, m,n);
-
-        if(verifyValuesOfCpCz(cpZjTab,n,m)){
-           
-        }else{
-            
-        }
-
-       var tabTest = majGridTabPivot(gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
-        // // gridTab = majOthersLines(gridTab, index_of_second_critere, index_of_first_critere,valueOfPivot, m,n);
-        console.log("gridTab",gridTab);
-        console.log("Tab test : ", tabTest);
-
-       
-
-      
-       
-       
-        
-        
-        
+        main(); 
      });
 
     $("#validate_param").click(function() {
@@ -75,6 +21,141 @@ $(document).ready(function() {
        
     });
 });
+
+function main(){
+            var n = get_n();
+            var m = get_m();
+
+            // var gridTab = generateGridTab(n,m);
+            // var cjTab = generateCjTab(n,m);
+            // var qTab = generateQTab(m);
+        
+            /* INITIALISATION */ 
+            var gridTab = [
+                [2,1],
+                [2,3],
+                [3,1],
+            ];
+            var cjTab = [3,2,0,0,0];
+            var qTab =  [18,42,24];
+            var cpTab = generateCpTab(m);
+            var outpoutVariablesTab = generateOutputVariables(n, m);
+            var gridTab = addOutputVariables(gridTab, n, m, outpoutVariablesTab);
+            var cpXjTab = generateCpXjTab(cpTab, gridTab,n,m);
+            var cjZjTab = generateCjZjTab(cjTab, cpXjTab, m,n);
+
+            z = calculZ(cpTab, qTab, m);
+            console.log(z);
+
+
+            var continuer = verifyValuesOfCpCz(cjZjTab, n, m);
+            
+            var i =0;
+            var iteration = 3;
+            while(i<iteration){
+
+                console.log("Iteration" + iteration);
+
+                var index_of_first_critere = findFirstCritere(cjZjTab);
+                var index_of_second_critere = findSecondCritere(qTab, gridTab, index_of_first_critere, m);
+                var valueOfPivot = getPivotValue(gridTab, index_of_first_critere, index_of_second_critere);
+                
+                var qTab = updateQtabAfterPivot(qTab, gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
+                console.log("qTab",qTab);
+                var gridTab = updateGridTabAfterPivot(gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
+                
+                var cpTab = updateCpTab(cpTab, cjTab, index_of_first_critere, index_of_second_critere, valueOfPivot);
+                console.log("cp",cpTab);
+              
+
+                console.log("grid",gridTab);
+
+                var cpXjTab = generateCpXjTab(cpTab, gridTab,n,m);
+                var cjZjTab = generateCjZjTab(cjTab, cpXjTab, m,n);
+                
+                continuer = verifyValuesOfCpCz(cjZjTab, n, m);
+               
+                i++;
+ 
+            }
+          
+
+            
+
+
+
+//  /*ZJ */    var cpXjTab = generateCpXjTab(cpTab, gridTab,n,m);
+// /*Cj - Zj */ var cjZjTab = generateCjZjTab(cjTab, cpXjTab, m,n);
+
+//             console.log("itéation 0");
+//             alert("iteration" + gridTab);
+//             var z = calculZ(cpTab, qTab, m);
+//             console.log(z);
+
+//             /* FIN INITIALISATION */ 
+
+//              /* Iteration 1 */ 
+//             /* Je Mets à jour la table CP */ 
+//             console.log("Itération 1");
+//             alert("iteration" + gridTab);
+//             /* TROUVER LES CRITERES */ 
+//             var index_of_first_critere = findFirstCritere(cjZjTab);
+//             var index_of_second_critere = findSecondCritere(qTab, gridTab, index_of_first_critere, m);
+//             var valueOfPivot = getPivotValue(gridTab, index_of_first_critere, index_of_second_critere );
+       
+//             var cpTab = updateCpTab(cpTab, cjTab, index_of_first_critere, index_of_second_critere, valueOfPivot);
+//             qTab = updateQtabAfterPivot(qTab, gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
+//             gridTab = updateGridTabAfterPivot(gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
+            
+//             var cpXjTab = generateCpXjTab(cpTab, gridTab,n,m);
+//             var cjZjTab = generateCjZjTab(cjTab, cpXjTab, m,n);
+//             var z = calculZ(cpTab, qTab, m);
+//             console.log(z);  
+
+
+//             console.log("Itération 2");
+//             alert("iteration" + gridTab);
+//             index_of_first_critere = findFirstCritere(cjZjTab);
+//             index_of_second_critere = findSecondCritere(qTab, gridTab, index_of_first_critere, m);
+//             valueOfPivot = getPivotValue(gridTab, index_of_first_critere, index_of_second_critere );
+//             console.log(index_of_first_critere);
+//             console.log(index_of_second_critere);
+//             console.log(valueOfPivot);
+
+
+//             cpTab = updateCpTab(cpTab, cjTab, index_of_first_critere, index_of_second_critere, valueOfPivot);
+//             console.log(cpTab);
+//             qTab = updateQtabAfterPivot(qTab, gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
+//             gridTab = updateGridTabAfterPivot(gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
+
+           
+            
+//             cpXjTab = generateCpXjTab(cpTab, gridTab,n,m);
+//             cjZjTab = generateCjZjTab(cjTab, cpXjTab, m,n);
+//             z = calculZ(cpTab, qTab, m);
+//             console.log(z);  
+
+            // console.log("Itération 3");
+    
+            // index_of_first_critere = findFirstCritere(cjZjTab);
+            // index_of_second_critere = findSecondCritere(qTab, gridTab, index_of_first_critere, m);
+            // valueOfPivot = getPivotValue(gridTab, index_of_first_critere, index_of_second_critere );
+
+           
+            // qTab = updateQtabAfterPivot(qTab, gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
+            // gridTab = updateGridTabAfterPivot(gridTab, index_of_second_critere, index_of_first_critere, valueOfPivot, m,n);
+            
+            // z = calculZ(cpTab, qTab, m);
+            // console.log(z); 
+            
+
+            
+            
+           
+
+            
+       
+}
 
 //---------------- FONCTIONS POUR LA GENERATION DE HTML ----------------------------- // 
 
@@ -166,7 +247,7 @@ function generateCjTab(n,m){
     }
     for(var i =0; i < nb_colonne; i++){
         if( cjTab[i] === undefined){
-            cjTab[i] = "0";
+            cjTab[i] = 0;
         };
     }
     return cjTab;
@@ -207,7 +288,7 @@ function generateCpXjTab(cpTab, gridTab,n,m){
 function generateCpTab(m){
     var cpTab = [];
     for(var i = 0; i<m; i++)
-        cpTab[i] = "0";
+        cpTab[i] = 0;
     return cpTab;
 } 
 
@@ -231,41 +312,44 @@ function generateOutputVariables(n,m){
     for(var i = 0; i < m; i++){
         outputVariables[i] = new Array(n)
         for(var j = 0; j < n; j++){
-            outputVariables[i][i] = '1';
+            outputVariables[i][i] = 1;
         }
     }
     
     for (var i = 0; i < m; i++) {
         for (var j = 0; j < m; j++) {
-            if (outputVariables[i][j] != '1') {
-                outputVariables[i][j] = "0";
+            if (outputVariables[i][j] != 1) {
+                outputVariables[i][j] = 0;
             }
         }
     }    
-    return outputVariables
+    return outputVariables;
 }
 
 // 7) Trouve le critère 1 
 // Retourne l'index / colonne 
-function findFirstCritere(cjTab){
+function findFirstCritere(cjZjTab){
 
-    var val_of_max_value =  Math.max.apply(Math, cjTab).toString(); // la valeur max
-    var index_of_first_critere = (cjTab.indexOf(val_of_max_value)); // l'index de la valeur max 
+    var val_of_max_value =  Math.max.apply(Math, cjZjTab); // la valeur max
+    var index_of_first_critere = (cjZjTab.indexOf(val_of_max_value)); // l'index de la valeur max 
+
     return index_of_first_critere;
 }
 
 // 8 ) Trouve le critere 2 
 // Retourne l'index / ligne 
 function findSecondCritere(qTab, gridTab, index_of_first_critere, m){
-    
+   
     for(var i = 0; i < m ; i++){
-        var ratio = qTab[i] /  gridTab[i][index_of_first_critere];
-
-        for(var j = 0; j<m ; j++){
-            if (ratio < (qTab[i] / gridTab[j][index_of_first_critere])){
-               var min_ratio = ratio;
-               var index_of_second_critere = i;
-            }
+        
+        if( qTab[0] / gridTab[0][index_of_first_critere] > 0){
+            var ratio = qTab[0] /  gridTab[0][index_of_first_critere];
+        }
+        
+        var index_of_second_critere = 0;
+        if ((ratio > (qTab[i] / gridTab[i][index_of_first_critere]))){
+             var min_ratio = ratio;
+             index_of_second_critere = i;
         }
     }
     return index_of_second_critere;
@@ -277,8 +361,8 @@ function getPivotValue(gridTab, index_of_first_critere, index_of_second_critere 
 }
 
 // 10) Mettre à jour le tableau Cp 
-function updateCpTab(cpTab, index_of_second_critere, valueOfPivot){
-    cpTab[index_of_second_critere] = valueOfPivot;
+function updateCpTab(cpTab, cjTab, index_of_first_critere, index_of_second_critere, valueOfPivot){
+    cpTab[index_of_second_critere] = cjTab[index_of_first_critere];
 
     return cpTab;
 }
@@ -286,7 +370,7 @@ function updateCpTab(cpTab, index_of_second_critere, valueOfPivot){
 
 
 // 11) Creation du tableau Cj - Zj 
-function generateCpZjTab(cjTab, cpXjTab, m, n){
+function generateCjZjTab(cjTab, cpXjTab, m, n){
    
     var nb_colonne =  parseInt(n) + parseInt(m);
     var cjZjTab = new Array();
@@ -316,30 +400,88 @@ function verifyValuesOfCpCz(cjZjTab, n, m){
 }
 
 // 13) MAJ des TABS 
-function majGridTabPivot(gridTab, index_of_second_critere, index_of_first_critere,valueOfPivot, m,n){
+// function updateGridTabAfterPivot(gridTab, index_of_second_critere, index_of_first_critere,valueOfPivot, m,n){
   
-   var nb_colonne =  parseInt(n) + parseInt(m);
-//    var tabTest = gridTab;
- 
-   for(var i = 0; i < m; i++){
-       for(var j =0; j<nb_colonne; j++){
-           if(i == index_of_second_critere){
-              
-            gridTab[i][j] = gridTab[i][j] / valueOfPivot;
-           }
-        }   
-    }
+//    var nb_colonne =  parseInt(n) + parseInt(m);
 
-    for(var i = 0; i < m-1; i++){
+//    for(var i = 0; i < m; i++){
+//        for(var j =0; j<nb_colonne; j++){
+//            if(i == index_of_second_critere){
+//             gridTab[i][j] = parseFloat(gridTab[i][j]) / parseFloat(valueOfPivot);
+//            }
+//         }   
+//     }
+
+//     for(var i = 0; i < m-1; i++){
+//         var valeur_pivot_line = gridTab[i][index_of_first_critere];
+//         for(var j=0; j<nb_colonne;j++){
+//             if (i !== index_of_second_critere){
+//                 gridTab[i][j] =  parseFloat(gridTab[i][j]) - (parseFloat(valeur_pivot_line) * parseFloat(gridTab[index_of_second_critere][j]));
+//             } 
+//         }
+//     }
+//     return gridTab;
+// }
+
+
+
+
+function updateGridTabAfterPivot(gridTab, index_of_second_critere, index_of_first_critere,valueOfPivot, m,n){
+    // alert("Mon tableau en entrée" + gridTab);
+    var nb_colonne =  parseInt(n) + parseInt(m);
+ 
+  
+    for(var i = 0; i < m; i++){
+        for(var j =0; j<nb_colonne; j++){
+            if(i == index_of_second_critere){
+                gridTab[i][j] = gridTab[i][j] / valueOfPivot;
+            }
+         }   
+     }
+ 
+     for(var k = 0; k < m; k++){
+         var valeur_pivot_line = gridTab[k][index_of_first_critere];
+         for(var j=0; j<nb_colonne;j++){
+             if (k !== index_of_second_critere){
+                 var remplacer = gridTab[k][j] - valeur_pivot_line * gridTab[index_of_second_critere][j];
+                //    alert("Mon 2eme critere" + index_of_second_critere + " || Ligne" + k + " : " + gridTab[k][j] + '=' + remplacer );
+                 gridTab[k][j] =  gridTab[k][j] - (valeur_pivot_line * gridTab[index_of_second_critere][j]);
+             } 
+         }
+     }
+     return gridTab;
+ }
+
+function updateQtabAfterPivot(qTab, gridTab, index_of_second_critere, index_of_first_critere,valueOfPivot, m,n){
+
+    var nb_colonne =  parseInt(n) + parseInt(m);
+ 
+    for(var i = 0; i < m; i++){
         var valeur_pivot_line = gridTab[i][index_of_first_critere];
-        for(var j=0; j<nb_colonne;j++){
-            if (i !== index_of_second_critere){
-                gridTab[i][j] =  gridTab[i][j] - (valeur_pivot_line * gridTab[index_of_second_critere][j]);
-            } 
-        }
+         if(i == index_of_second_critere){
+             qTab[i] = qTab[i] / valueOfPivot;
+         }
+     }
+ 
+     for(var i = 0; i < m; i++){
+         var valeur_pivot_line = qTab[i][index_of_first_critere];
+         if (i !== index_of_second_critere){
+             qTab[i] = qTab[i] + (-1 * (gridTab[i][index_of_first_critere] * qTab[index_of_second_critere]));
+         }
+     }
+     return qTab;
+ }
+
+
+
+// 14) Calcul de Z, enfin ! 
+function calculZ(cpTab, qTab, m){
+    var z = 0;
+    for(var i =0; i<m; i++){
+        // alert(cpTab[i] + ' ' +qTab[i])
+        z = z +  (cpTab[i] * qTab[i]);
     }
-    
-return gridTab;
+    return z;
 }
 
 
