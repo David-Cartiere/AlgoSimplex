@@ -72,9 +72,7 @@ function main(){
                 z = calculZ(cpTab, qTab, m);
                 console.log(z);
 
-                $("#resultat").append("<h4 id='iteration'> Iteration " + i +"</h4>");
-                $("#resultat").append("<p id='valeur pivot'> Valeur pivot: " + valueOfPivot +"</p>");
-                $("#resultat").append("<p id='z_resultat'><span class='badge badge-primary badge-pill'> Z = " + z +"</span></p>");
+                printResult(i, valueOfPivot, z);
 
                 i++;
         }      
@@ -396,6 +394,13 @@ function calculZ(cpTab, qTab, m){
         z = z +  (cpTab[i] * qTab[i]);
     }
 return z;
+}
+
+// 15) Afficher le résultat 
+function printResult(i, valueOfPivot, z){
+    $("#resultat").append("<h4 id='iteration'> Iteration " + i +"</h4>");
+    $("#resultat").append("<p id='valeur pivot'> Valeur pivot: " + valueOfPivot +"</p>");
+    $("#resultat").append("<p id='z_resultat'><span class='badge badge-primary badge-pill'> Z = " + z +"</span></p>");
 }
 
 
