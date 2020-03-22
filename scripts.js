@@ -39,8 +39,6 @@ function main(){
             // var cjTab = [3,2,0,0,0];
             // var qTab =  [18,42,24];
 
-          
-
             var cpTab = generateCpTab(m);
             var outpoutVariablesTab = generateOutputVariables(n, m);
             var gridTab = addOutputVariables(gridTab, n, m, outpoutVariablesTab);
@@ -55,9 +53,12 @@ function main(){
             console.log(cjTab);
             console.log(qTab);
 
-            while(verifyValuesOfCpCz(cjZjTab, n, m)){
+            $("#resultat").append("<h3>Résultat</h3>");
+            $("#resultat").append("<h4 id='iteration'> Iteration 0</h4>");
+            $("#resultat").append("<p id='z_resultat'><span class='badge badge-primary badge-pill'> Z = " + z +"</span></p>");
 
-                
+            var i =1;
+            while(verifyValuesOfCpCz(cjZjTab, n, m)){
 
                 var index_of_first_critere = findFirstCritere(cjZjTab);
                 var index_of_second_critere = findSecondCritere(qTab, gridTab, index_of_first_critere, m);
@@ -68,10 +69,14 @@ function main(){
                 var cpXjTab = generateCpXjTab(cpTab, gridTab,n,m);
                 var cjZjTab = generateCjZjTab(cjTab, cpXjTab, m,n); 
 
-                
                 z = calculZ(cpTab, qTab, m);
                 console.log(z);
 
+                $("#resultat").append("<h4 id='iteration'> Iteration " + i +"</h4>");
+                $("#resultat").append("<p id='valeur pivot'> Valeur pivot: " + valueOfPivot +"</p>");
+                $("#resultat").append("<p id='z_resultat'><span class='badge badge-primary badge-pill'> Z = " + z +"</span></p>");
+
+                i++;
         }      
 }
 
@@ -81,12 +86,21 @@ function main(){
 // n = nombre de variables 
 function buildZVariables(n) {
 
-    $("#div_valeur_z").empty();
+    $("#formulaire_z").empty();
+    $("#resultat").empty();
+
+    $("#formulaire_z").append("<select id='selection_z' class='custom-select'><option>Max</option><option>Min</option></select>");
 
     for (var i = 0; i < n; i++){
-        var create_z = "<input id='variable_z" + i + "' type='number' size='2'>";
-        create_z += "<label for='variable_z" + i + "'>x<sub>" + (i + 1) + "</sub></label>";
-        $("#div_valeur_z").append(create_z);
+        var create_z = " <input class='form-control' id='variable_z" + i + "' type='text' size='2'>";
+        if(i == n-1){
+            create_z += "<label for='variable_z" + i + "'>x<sub>" + (i + 1) + "</sub></label>";
+        }
+        else{
+            create_z += "<label for='variable_z" + i + "'>x<sub>" + (i + 1) + " + </sub></label>";
+        }
+        
+        $("#formulaire_z").append(create_z);
     }
     
 }
@@ -94,36 +108,39 @@ function buildZVariables(n) {
 // 2) Créer le formulaire de saisie des contraintes 
 function buildGridVariables(n,m) {
 
-    $("#div_contraintes").empty();
+    $("#contraintes_form").empty();
+  
 
     for (var i = 0; i < m; i++) {
-            var txt0 = "";
-            txt0 += "<p>Contraintes " + i + ":</p>";
-            $("#div_contraintes").append(txt0);
 
+        $("#contraintes_form").append("<form class='form-inline form_contraintes' id='form_row_" + i +"'>");
+       
             for (var j = 0; j < n; j++) {
-                    var txt = "<input id='txtCj" + i + "_" + j + "' type='number' size='2'>";
-                    txt += "<label for='txtCj" + i + "_" + j + "'>x<sub>" + (j + 1) + "</sub></label>";
-                    $("#div_contraintes").append(txt);
+                
+                    var txt = "<input class='form-control' id='txtCj" + i + "_" + j + "' type='text' size='2'>";
+                    if(j == n-1){
+                        txt += "<label for='txtCj" + i + "_" + j + "'>x<sub>" + (j + 1) + "</sub></label>";
+                    }else{
+                        txt += "<label for='txtCj" + i + "_" + j + "'>x<sub>" + (j + 1) + " + </sub></label>";
+                    }
+                        $("#form_row_" + i +"").append(txt);
+                  
             }
-
+   
             var txt1 = "";
-            txt1 += "<select id='selection_comparateur" + i + "'>";
+            txt1 += "<select class='form-control' id='selection_comparateur" + i + "'>";
             txt1 += "<option id='comparateurInfEgale'><=</option>";
             txt1 += "<option id='comparateurSupEgale'>=></option>";
             txt1 += "<option id='comparateurEgale'>=</option>";
             txt1 += '</select>';
-            txt1 += "<input type='number' id='valeur_contrainte_" + i + "'  size='2'>";
+            txt1 += "<input class='form-control' type='text' id='valeur_contrainte_" + i + "'  size='2'></<input>";
 
-            $("#div_contraintes").append(txt1);
+            $("#form_row_" + i +"").append(txt1);
+            $("contraintes_form").append("</form>");
         }
-        
     $(".hidden_content").addClass("visible_content");
     $(".visible_content").removeClass("hidden_content");
 }
-
-
-
 
 //---------------- FONCTIONS POUR LE TRAITEMENT         ----------------------------- // 
 // 1) Récupère le nombre de variables
@@ -212,15 +229,12 @@ function generateCpTab(m){
 
 // 5) Ajout des variables sortantes 
 function addOutputVariables(gridTab, n, m, outpoutVariablesTab){
-    alert(outpoutVariablesTab);
-
         for(var i = 0; i < m; i++){
             for(var j = 0; j<m; j++){
                 gridTab[i].push(outpoutVariablesTab[i][j]);
             }
         }
-    return gridTab;
-        
+    return gridTab;      
 }
 
 // 6) Tableau générant les variables sortantes 
@@ -301,8 +315,6 @@ function updateCpTab(cpTab, cjTab, index_of_first_critere, index_of_second_crite
     return cpTab;
 }
 
-
-
 // 11) Creation du tableau Cj - Zj 
 function generateCjZjTab(cjTab, cpXjTab, m, n){
    
@@ -377,15 +389,13 @@ function updateQtabAfterPivot(qTab, gridTab, index_of_second_critere, index_of_f
      return qTab;
  }
 
-
-
 // 14) Calcul de Z, enfin ! 
 function calculZ(cpTab, qTab, m){
     var z = 0;
     for(var i =0; i<m; i++){
         z = z +  (cpTab[i] * qTab[i]);
     }
-    return z;
+return z;
 }
 
 

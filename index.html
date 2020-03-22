@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calcul simplex</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="scripts.js"></script>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/solar/bootstrap.min.css" rel="stylesheet" integrity="sha384-Ya0fS7U2c07GI3XufLEwSQlqhpN0ri7w/ujyveyqoxTJ2rFHJcT6SUhwhL7GM4h9" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="#">ASimplex</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01"></div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="jumbotron">
+            <section>
+                <h3>Veuillez saisir le nombre de contraintes et de variables</h3>
+                <form class="form form-inline" id="formulaire_saisie_n_m">
+                    <fieldset>
+                        <input type="text" class="form-control" id="txtn" value="3">
+                        <input type="text" class="form-control" id="txtm" value="3">
+                        <button type="button" id="validate_param" class="btn btn-primary">Valider</button>
+                    </fieldset>
+                </form>
+            </section>
+        </div>
+
+        <!-- Valeur Z -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <section>
+                    <h4>Fonction à optimiser</h4>
+                    <form class="form form-inline" id="formulaire_z"> </form>
+                </section>
+            </div>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <section>
+                    <h4>Les contraintes</h4>
+                    <div id="contraintes_form">
+
+                    </div>
+                    <button value='Trouver' id="findSimplex" class="btn btn-primary">Résoudre</button>
+                </section>
+            </div>
+        </div>
+
+        <section id="section_resultat" class="jumbotron">
+
+            <div id="resultat"> </div>
+
+        </section>
+
+    </div>
+</body>
+
+</html>
