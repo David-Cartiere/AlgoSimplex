@@ -29,15 +29,7 @@ function main(){
             var gridTab = generateGridTab(n,m);
             var cjTab = generateCjTab(n,m);
             var qTab = generateQTab(m);
-        
-            /* INITIALISATION */ 
-            // var gridTab = [
-            //     [2,1],
-            //     [2,3],
-            //     [3,1],
-            // ];
-            // var cjTab = [3,2,0,0,0];
-            // var qTab =  [18,42,24];
+
 
             var cpTab = generateCpTab(m);
             var outpoutVariablesTab = generateOutputVariables(n, m);
@@ -49,9 +41,13 @@ function main(){
             z = calculZ(cpTab, qTab, m);
             console.log(z);
 
-            console.log(gridTab);
-            console.log(cjTab);
-            console.log(qTab);
+            // console.log(gridTab);
+            // console.log(cjTab);
+            // console.log(qTab);
+            // console.log(cpXjTab);
+            // console.log(cjZjTab);
+
+        
 
             $("#resultat").append("<h3>Résultat</h3>");
             $("#resultat").append("<h4 id='iteration'> Iteration 0</h4>");
@@ -71,9 +67,15 @@ function main(){
 
                 z = calculZ(cpTab, qTab, m);
                 console.log(z);
+                console.log(index_of_first_critere);
+                console.log(index_of_second_critere);
+                console.log(valueOfPivot);
+                
 
                 printResult(i, valueOfPivot, z);
-
+                if(i == 4){
+                    break;
+                }
                 i++;
         }      
 }
@@ -402,6 +404,45 @@ function printResult(i, valueOfPivot, z){
     $("#resultat").append("<p id='valeur pivot'> Valeur pivot: " + valueOfPivot +"</p>");
     $("#resultat").append("<p id='z_resultat'><span class='badge badge-primary badge-pill'> Z = " + z +"</span></p>");
 }
+
+/* ---------- FONCTIONS CONCERNANT LA MINIMISATION --------- */ 
+
+function getSignOfContrainte(m){
+    for(var i=0; i<m; i++){
+        if($("#selection_comparateur" + i).value() == "<="){
+            for(var i =0; i < nb_colonne; i++){
+                cjTab[i].push(1);
+            }
+        }
+        if($("#selection_comparateur" + i).value() == "=>"){
+            cjTab[i].push(-1);
+        }
+    }
+}
+
+function count_n_m(cpTab){
+    return cpTab.length - m;
+}
+
+function generateNormalForm(){
+
+
+}
+
+function updateZ(){
+
+}
+
+function verifyValuesOfVariables(){
+
+}
+
+function generateDimension(){
+    updateZ();
+}
+
+
+
 
 
 
